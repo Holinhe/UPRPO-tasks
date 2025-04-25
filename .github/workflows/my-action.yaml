@@ -11,16 +11,16 @@ jobs:
 
       - name: Run on push
         uses: appleboy/telegram-action@master
-        if: github.events_name == 'push'
+        if: github.event_name == 'push'
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          messege: 'Push complete'
+          message: 'Push complete'
 
       - name: Run on create
         uses: appleboy/telegram-action@master
-        if: github.events_name == 'create'
+        if: github.event_name == 'create'
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          messege: 'Create complete'
+          message: 'Create complete'
