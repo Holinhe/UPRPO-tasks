@@ -15,7 +15,7 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          messege: Push complete
+          messege: 'Push complete'
 
       - name: Run on create
         uses: appleboy/telegram-action@master
@@ -23,4 +23,4 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          messege: Create complete
+          messege: 'Create complete'
