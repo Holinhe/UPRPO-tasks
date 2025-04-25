@@ -1,0 +1,26 @@
+name: Telegram notifications
+
+on: [push, create]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run on push
+        uses: appleboy/telegram-action@master
+        if: github.events_name == 'push'
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          messege: Push complete
+
+      - name: Run on create
+        uses: appleboy/telegram-action@master
+        if: github.events_name == 'create'
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          messege: Create complete
