@@ -27,8 +27,12 @@ jobs:
       - name: Generate git diff message
         id: git-diff
         run: |
-          DIFF_MESSAGE=$(git diff -w --name-status HEAD~1 HEAD | sed -e 's/^A[^ ]/Added: /' -e 's/^M[^ ]/Modified: /' -e 's/^D[^ ]/Deleted: /')
-          echo "diff_message=${DIFF_MESSAGE}" >> $GITHUB_OUTPUT
+          DIFF_MESSAGE=$(git diff -w --name-status HEAD~1 HEAD | 
+            sed -e 's/^A[^ ]/🆕 Added: /' \
+            -e 's/^M[^ ]/✏️ Modified: /' \
+            -e 's/^D[^ ]/🗑️ Deleted: /')
+          DIFF_MESSAGE_JSON=$(jq -Rs . <<< "$DIFF_MESSAGE")
+          echo "diff_message=${DIFF_MESSAGE_JSON}" >> $GITHUB_OUTPUT
 
       - name: Run on push
         uses: appleboy/telegram-action@master
