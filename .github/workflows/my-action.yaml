@@ -12,6 +12,18 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Author name
+        id: commit-author
+        run: |
+          AUTHOR_NAME=$(git log --pretty=format:"%an" -1)
+          echo "author-name=${AUTHOR_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Commit comment
+        id: text-comment
+        run: |
+          COMMIT_COMMENT=$(git log --pretty=format:"%s" -1)
+          echo "commit-comment=${COMMIT_COMMENT}" >> $GITHUB_OUTPUT
+
       - name: Generate git diff message
         id: git-diff
         run: |
@@ -24,7 +36,12 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          message: ${{ steps.git-diff.outputs.diff_message }}
+          message: |
+            New commit delivered
+            Author: ${{ steps.commit-author.outputs.author-name }}
+            Comment: ${{ steps.text-comment.outputs.commit-comment }}
+            Changes:
+            ${{ steps.git-diff.outputs.diff_message }}
 
       - name: Run on create
         uses: appleboy/telegram-action@master
