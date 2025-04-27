@@ -15,9 +15,7 @@ jobs:
       - name: Generate git diff message
         id: git-diff
         run: |
-          DIFF_MESSAGE=$(git diff -w --name-status HEAD~1 HEAD | sed -e 's/^A[^ ]/Added: /' 
-          -e 's/^M[^ ]/Modified: /' 
-          -e 's/^D[^ ]/Deleted: /')
+          DIFF_MESSAGE=$(git diff -w --name-status HEAD~1 HEAD | sed -e 's/^A[^ ]/Added: /' -e 's/^M[^ ]/Modified: /' -e 's/^D[^ ]/Deleted: /')
           echo "diff_message=${DIFF_MESSAGE}" >> $GITHUB_OUTPUT
 
       - name: Run on push
