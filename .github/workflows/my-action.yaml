@@ -45,7 +45,7 @@ jobs:
             Author: ${{ steps.commit-author.outputs.author-name }}
             Comment: ${{ steps.text-comment.outputs.commit-comment }}
             Changes:
-            ${{ steps.git-diff.outputs.diff_message }}
+            ${{ fromJSON(steps.git-diff.outputs.diff_message) }}
 
       - name: Run on create
         uses: appleboy/telegram-action@master
