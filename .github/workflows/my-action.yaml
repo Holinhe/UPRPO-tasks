@@ -6,8 +6,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Generate git diff message
+        id: git-diff
+        run: |
+          DIFF_MESSAGE=$(git diff -w --name-status HEAD~1 HEAD | sed -e 's/^A[^ ]/Added: /' 
+          -e 's/^M[^ ]/Modified: /' 
+          -e 's/^D[^ ]/Deleted: /')
+          echo "diff_message=${DIFF_MESSAGE}" >> $GITHUB_OUTPUT
 
       - name: Run on push
         uses: appleboy/telegram-action@master
@@ -15,7 +26,7 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          message: 'Push complete'
+          message: ${{ steps.git-diff.outputs.diff_message }}
 
       - name: Run on create
         uses: appleboy/telegram-action@master
